@@ -1,0 +1,16 @@
+JOSLAINE
+
+PARA CONTROLE DE ADM OU USER NORMAL:
+login.php >> (session_star() // criar vars de sessão)
+nas pgs >> (include(sessao.php) // include(topo.php))
+
+sessao.php (verifica se está logado sim ou não, caso não manda de volta para o login)
+topo.php (Tem if para verificar se existe a var de sessão adm, Tem um outro if para verificar se é 0 ou 1)
+(cria topos personalizados para cada tipo de usuário)
+
+
+PARA CONTROLE DO CARRINHO, LISTAR ITENS APENAS DO USUÁRIO CORRETO
+criar uma coluno na tabela carrinho para salvar o email de quem add
+no arquivo produtos.php add o email na sql da função add_to_cart
+antes de mais nada, verica se está logado, caso não direciona o para o login
+cart.php linha 64, ajusta a sql para consultar apenas onde o email é igual ao email da sessão
