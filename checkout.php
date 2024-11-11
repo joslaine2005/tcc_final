@@ -2,6 +2,16 @@
 
 @include 'conexao.php';
 
+session_start();
+if (!isset($_SESSION['email'])) {
+   unset($_SESSION['email']);
+   unset($_SESSION['senha']);
+   session_destroy();
+   header('Location: login.php');
+   exit;
+}
+$email = $_SESSION['email'];
+
 if(isset($_POST['order_btn'])){
 
    $name = $_POST['name'];
@@ -15,7 +25,7 @@ if(isset($_POST['order_btn'])){
    $country = $_POST['country'];
    $pin_code = $_POST['pin_code'];
 
-   $cart_query = mysqli_query($conn, "SELECT * FROM `cart`");
+   $cart_query = mysqli_query($conn, "SELECT * FROM `cart` WHERE email = '$email'");
    $price_total = 0;
    if(mysqli_num_rows($cart_query) > 0){
       while($product_item = mysqli_fetch_assoc($cart_query)){
@@ -49,6 +59,7 @@ if(isset($_POST['order_btn'])){
       </div>
       ";
    }
+   mysqli_query($conn, "DELETE FROM `cart` WHERE email = '$email'");
 
 }
 
@@ -83,7 +94,7 @@ if(isset($_POST['order_btn'])){
 
    <div class="display-order">
       <?php
-         $select_cart = mysqli_query($conn, "SELECT * FROM `cart`");
+         $select_cart = mysqli_query($conn, "SELECT * FROM `cart` WHERE email = '$email'");
          $total = 0;
          $grand_total = 0;
          if(mysqli_num_rows($select_cart) > 0){
